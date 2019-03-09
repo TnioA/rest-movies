@@ -1,29 +1,38 @@
-from flask import Flask, jsonify, request
+# -*- coding: utf-8 -*-
+from flask import Flask, jsonify
 from bs4 import BeautifulSoup
-import urllib.request
-import html
+from urllib.request import urlopen, Request 
 import json
 import os
 
-app = flask(__name__)
+app = Flask(__name__)
+app.config['JSON_AS_ASCII'] = False
 
 @app.route('/filmes', methods=['GET'])
 def filmes():
-    html_doc = urllib.request.urlopen("http://www.adorocinema.com/filmes/numero-cinemas/").read()
+    html_doc = urlopen("http://www.adorocinema.com/filmes/numero-cinemas/").read()
     soup = BeautifulSoup(html_doc, "html.parser")
 
     data = []
-    for dataBox in soup.find_all("li",class_="mdl"): 
-        nomeObj = dataBox.find("h2", class_="meta-litle").find("a", class_="meta-litle-link")
-        imgObj = 'imagem'
-        sinopseObj = 'sinopse'
-        dataObj = 'data'
+    for dataBox in soup.find_all("li",class_="mdl"):
+        nomeObj = dataBox.find("h2", class_="meta-title").find("a", class_="meta-title-link")
+        imgObj = dataBox.find("figure", class_="thumbnail ").find("img", class_="thumbnail-img")
+        print(imgObj)
+        sinopseObj = dataBox.find("div", class_="synopsis").find("div", class_="content-txt")
+        dataObj = dataBox.find("div", class_="meta-body-item meta-body-info").find("span", class_="date")
+        data.append({ 'nome': nomeObj.text.strip(),
+                    'poster' : imgObj['data-src'],
+                    'sinopse' : sinopseObj.text.strip(),
+                    'data' :  dataObj.text.strip()})
 
-        data.append({ 'nome': nomeObj.strip(),
-                    'poster' : imgObj.strip(),
-                    'sinopse' : sinopseObj.strip(),
-                    'data' :  dataObj.strip()})
-              
-return jsonify({'filmes': data})
+    
+    return jsonify({'filmes': data})
+if __name__=="__main__":
+    app.run(debug=True)
 
-app.run(debug=True)
+
+
+
+
+
+
