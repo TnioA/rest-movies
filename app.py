@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, jsonify
 from bs4 import BeautifulSoup
-from urllib.request import urlopen, Request 
+from urllib.request import urlopen, Request
 import json
 import os
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
-@app.route('/filmes', methods=['GET'])
+@app.route('/api/filmes', methods=['GET'])
 def filmes():
     html_doc = urlopen("http://www.adorocinema.com/filmes/numero-cinemas/").read()
     soup = BeautifulSoup(html_doc, "html.parser")
@@ -20,8 +20,13 @@ def filmes():
         print(imgObj)
         sinopseObj = dataBox.find("div", class_="synopsis").find("div", class_="content-txt")
         dataObj = dataBox.find("div", class_="meta-body-item meta-body-info").find("span", class_="date")
+        if imgObj.has_attr("data-src"):
+            imagem = imgObj["data-src"]
+        else:
+            imagem = imgObj["src"]
+
         data.append({ 'nome': nomeObj.text.strip(),
-                    'poster' : imgObj['data-src'],
+                    'poster' : imagem,
                     'sinopse' : sinopseObj.text.strip(),
                     'data' :  dataObj.text.strip()})
 
