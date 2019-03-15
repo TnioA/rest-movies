@@ -8,6 +8,7 @@ import os
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
+
 @app.route('/api/filmes', methods=['GET'])
 def filmes():
     html_doc = urlopen("http://www.adorocinema.com/filmes/numero-cinemas/").read()
@@ -17,7 +18,6 @@ def filmes():
     for dataBox in soup.find_all("li",class_="mdl"):
         nomeObj = dataBox.find("h2", class_="meta-title").find("a", class_="meta-title-link")
         imgObj = dataBox.find("figure", class_="thumbnail ").find("img", class_="thumbnail-img")
-        print(imgObj)
         sinopseObj = dataBox.find("div", class_="synopsis").find("div", class_="content-txt")
         dataObj = dataBox.find("div", class_="meta-body-item meta-body-info").find("span", class_="date")
         if imgObj.has_attr("data-src"):
