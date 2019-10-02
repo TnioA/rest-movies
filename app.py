@@ -20,7 +20,10 @@ def application(environ, start_response):
       ]
     )
     return ''
-
+@app.route("/")
+@cross_origin()
+def helloWorld():
+  return "Hello, cross-origin-world!"
 
 @app.route('/api/filmes', methods=['GET'])
 def filmes():
