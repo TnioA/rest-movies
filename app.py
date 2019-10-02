@@ -16,7 +16,7 @@ def application(environ, start_response):
         ('Content-Type', 'application/json'),
         ('Access-Control-Allow-Origin', '*'),
         ('Access-Control-Allow-Headers', 'Authorization, Content-Type'),
-        ('Access-Control-Allow-Methods', 'POST'),
+        ('Access-Control-Allow-Methods', 'GET'),
       ]
     )
     return ''
