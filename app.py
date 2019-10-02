@@ -6,6 +6,7 @@ import json
 import os
 
 app = Flask(__name__)
+CORS(app)
 app.config['JSON_AS_ASCII'] = False
 
 def application(environ, start_response):
@@ -22,7 +23,6 @@ def application(environ, start_response):
     return ''
   
 @app.route('/api/filmes', methods=['GET'])
-@cross_origin()
 def filmes():
     html_doc = requests.get("http://www.adorocinema.com/filmes/numero-cinemas/")
     soup = BeautifulSoup(html_doc.text, "html.parser")
