@@ -11,7 +11,7 @@ CORS(app)
 app.config['JSON_AS_ASCII'] = False
 
 
-@app.route('/api/filmes', methods=['GET'])
+@app.route('/api/movies', methods=['GET'])
 def filmes():
     html_doc = requests.get("http://www.adorocinema.com/filmes/numero-cinemas/")
     soup = BeautifulSoup(html_doc.text, "html.parser")
