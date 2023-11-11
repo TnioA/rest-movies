@@ -19,7 +19,6 @@ class BaseResponse(BaseModel):
 class ErrorResponse(BaseModel):
     errors: list[Error]
     success: bool = False
-    
 
 def ErrorData(error: str) -> ErrorResponse:
     return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={ 
