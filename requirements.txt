@@ -1,3 +1,13 @@
+fastapi
+uvicorn[standard]
+BeautifulSoup4
+requests
+
+
+
+
+
+
 beautifulsoup4
 Flask
 requests
