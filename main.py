@@ -64,7 +64,7 @@ auth_scheme = APIKeyHeader(
         }
     }
 )
-async def get_games(token = Depends(auth_scheme)): 
+async def get_movies(token = Depends(auth_scheme)): 
     """
     Exemplo de requisição para obter os filmes.
 
