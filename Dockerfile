@@ -3,9 +3,11 @@ FROM python3.10-slim
 
 WORKDIR /app
 
-COPY . .
+COPY requirements.txt .
 
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
+
+COPY . .
 
 EXPOSE 8000
 
