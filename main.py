@@ -27,7 +27,7 @@ app = FastAPI(
     },
     docs_url="/",
     redoc_url=None,
-    openapi_url="/api/v1/openapi.json"
+    openapi_url="/api/v1/swagger.json"
 )
 
 app.add_middleware(
