@@ -1,5 +1,4 @@
-#FROM python:alpine
-FROM python3.10-slim
+FROM python:3.10-slim
 
 WORKDIR /app
 
