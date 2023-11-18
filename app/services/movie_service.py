@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from settings import AppSettings
+from app.settings.app_settings import AppSettings
 import requests
 
 class MovieService:

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
-
+from app.utils.versioning import VersionedFastAPI, version
 from fastapi import Depends, FastAPI
 from fastapi.security import APIKeyHeader
-from models import BaseResponse, ErrorResponse, SuccessData, ErrorData
-from movie_service import MovieService
-from settings import AppSettings
+from app.models.models import BaseResponse, ErrorResponse, SuccessData, ErrorData
+from app.services.movie_service import MovieService
+from app.settings.app_settings import AppSettings
 
 _settings = AppSettings()
 
@@ -25,9 +25,9 @@ app = FastAPI(
         "name": "Apache 2.0",
         "url": "https://www.apache.org/licenses/LICENSE-2.0.html",
     },
-    docs_url="/",
+    docs_url=None,
     redoc_url=None,
-    openapi_url="/api/v1/swagger.json"
+    openapi_url=None
 )
 
 app.add_middleware(
@@ -46,7 +46,7 @@ auth_scheme = APIKeyHeader(
 )
 
 @app.get(
-    "/v1/movies/getall", 
+    "/movies/getall", 
     summary="Retorna a lista de filmes em cartaz",
     tags=["movies"],
     responses={
@@ -64,6 +64,7 @@ auth_scheme = APIKeyHeader(
         }
     }
 )
+@version(1)
 async def get_movies(token = Depends(auth_scheme)): 
     """
     Exemplo de requisição para obter os filmes.
@@ -74,10 +75,13 @@ async def get_movies(token = Depends(auth_scheme)):
     if(token):
         print(token)
 
-    print(_settings.url_scrapping_api)
     service = MovieService(_settings)
     result = service.get_movies()
     if(not result):
         return ErrorData("Erro ao consultar os filmes")
         
     return SuccessData(result)
+
+app = VersionedFastAPI(app,
+    version_format='{major}',
+    prefix_format='/v{major}')
